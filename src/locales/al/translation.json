@@ -1,0 +1,55 @@
+{
+  "hero": {
+    "title": {
+      "line1": "Koha e Agjërimit në",
+      "line2": "Vendin Tuaj"
+    },
+    "description": {
+      "line1": "Aplikacioni ofron kohët e sakta të iftarit dhe syfyrit, të cilat llogariten automatikisht sipas vendndodhjes gjeografike të përdoruesit.",
+      "line2": "",
+      "line3": "përcaktohet nga",
+      "line4": "ndërsa",
+      "line5": "përcaktohet nga"
+    },
+    "iftar": "Koha e Iftarit",
+    "suhur": "Koha e Syfyrit",
+    "sunset": "perëndimi i diellit",
+    "nauticalDawn": "agimi detar",
+    "chooseLocation": "Zgjidhni vendndodhjen tuaj",
+    "dua": "Duaja e Iftarit"
+  },
+  "location": {
+    "title": "Zgjidhni vendndodhjen tuaj",
+    "kosovoCities": "Kosovë",
+    "albaniaCities": "Shqipëri",
+    "chooseCity": "Zgjidhe qytetin tënd",
+    "getFastingTimes": "Merr kohët e agjërimit",
+    "searchOnline": "Ose kërko qytetin tënd",
+    "searchPlaceholder": "Kërko qytet...",
+    "search": "Kërko",
+    "loading": "Duke u ngarkuar...",
+    "date": "Data",
+    "iftar": "Iftari (Perëndimi i diellit)",
+    "suhur": "Syfyri (Agimi detar)",
+    "unknownCountry": "Shtet i panjohur",
+    "timeUntilIftar": "Koha e mbetur deri në Iftar:",
+    "iftarPassed": "Koha e Iftarit ka kaluar.",
+    "errors": {
+      "failedSunData": "Dështoi marrja e të dhënave të diellit.",
+      "chooseCity": "Ju lutem zgjidhni fillimisht një qytet.",
+      "loadCity": "Nuk u ngarkuan të dhënat për qytetin e zgjedhur.",
+      "enterCity": "Ju lutem shkruani emrin e qytetit.",
+      "searchFailed": "Kërkimi dështoi. Provoni një qytet tjetër."
+    }
+  },
+  "dua": {
+    "title": "Lutja e agjëruesit pas çeljes së iftarit",
+    "author": "– Shejkh Abdur-Rezak el-Bedër",
+    "transliteration": "Dhehebedh-dhamau uebtel-letil-'uruuku, ue thebetel-exhru in shaa Allah",
+    "translation": "\"Kaloi etja, u lagën venat dhe shpërblimi mbeti – InshaAllah!\"",
+    "source": "Transmeton Ebu Daudi (2357)",
+    "translator": "Përktheu: Servet Mata",
+    "niyyahQuestion": "A ekziston ndonjë fjalë për ta bërë nijet agjërimin?"
+  }
+
+}

@@ -1,0 +1,56 @@
+{
+  "hero": {
+    "title": {
+      "line1": "Fasting Time in",
+      "line2": "Your Country"
+    },
+    "description": {
+      "line1": "The application provides the exact times of iftar and suhur, which are calculated automatically according to the user's geographical location.",
+      "line2": "",
+      "line3": "is determined by",
+      "line4": "and",
+      "line5": "is determined by"
+    },
+    "iftar": "Iftar Time",
+    "suhur": "Suhur Time",
+    "sunset": "sunset",
+    "nauticalDawn": "nautical dawn",
+    "chooseLocation": "Choose your location",
+    "dua": "Iftar Dua "
+  },
+
+   "location": {
+    "title": "Select your location",
+    "kosovoCities": "Kosova",
+    "albaniaCities": "Albania",
+    "chooseCity": "Choose your city",
+    "getFastingTimes": "Get fasting times",
+    "searchOnline": "Or search your city online",
+    "searchPlaceholder": "Search city...",
+    "search": "Search",
+    "loading": "Loading...",
+    "date": "Date",
+    "iftar": "Iftar (Sunset)",
+    "suhur": "Suhur (Nautical Dawn)",
+    "unknownCountry": "Unknown country",
+    "timeUntilIftar": "Time left until Iftar:",
+    "iftarPassed": "Iftar time has passed.",
+    "errors": {
+      "failedSunData": "Failed to fetch sun data.",
+      "chooseCity": "Please choose a city first.",
+      "loadCity": "Could not load data for selected city.",
+      "enterCity": "Please enter a city name.",
+      "searchFailed": "Search failed. Try another city."
+    }
+  },
+  "dua": {
+    "title": "The dua of the fasting person after breaking the fast",
+    "author": "– Shaykh Abdur-Razzaq Al-Badr",
+    "transliteration": "Dhahaba az-zama’u wabtallatil-‘urooq, wa thabatal-ajru in shaa’ Allah",
+    "translation": "\"The thirst has gone, the veins are moistened, and the reward is confirmed, In shaa Allah.\"",
+    "source": "Reported by Abu Dawud (2357)",
+    "translator": "Translated by: Servet Mata",
+    "niyyahQuestion": "Is there any phrase to make the intention for fasting?"
+  }
+}
+

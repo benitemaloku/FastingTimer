@@ -2,15 +2,15 @@ import { useRef } from "react";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "./app/MainLayout";
 import { HeroSection } from "./components/Hero.jsx";
-import LocationPage from "./app/LocationPage.jsx";
+import TimesPage from "./app/TimesPage.jsx";
 import DuaPage from "./app/DuaPage.jsx";
 import ScrollToHash from "./components/ScrollToHash.jsx";
 
 function HomePage() {
-  const locationRef = useRef(null);
+  const timesRef = useRef(null);
 
-  const scrollToLocation = () => {
-    locationRef.current?.scrollIntoView({
+  const scrollToTimes = () => {
+    timesRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
@@ -19,11 +19,11 @@ function HomePage() {
   return (
     <MainLayout>
       <section id="home">
-        <HeroSection onChooseLocation={scrollToLocation} />
+        <HeroSection onChooseTimes={scrollToTimes} />
       </section>
 
-      <section id="location" ref={locationRef}>
-        <LocationPage />
+      <section id="times" ref={timesRef}>
+        <TimesPage />
       </section>
     </MainLayout>
   );

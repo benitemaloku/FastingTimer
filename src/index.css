@@ -10,16 +10,20 @@ html {
   scroll-behavior: smooth;
 }
 
-.circles{
+.bg-circles{
   @apply absolute inset-0 border-2 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-emerald-50/5 shadow-[0_0_50px_inset] shadow-emerald-50/5
 }
 
-.stars{
+.bg-stars{
   @apply brightness-0 invert
 }
 
-.sparkle{
+.bg-sparkle{
   @apply opacity-20 brightness-0 invert
+}
+
+.bg-heroorbit{
+  @apply rounded-full bg-[#BDC4D4] opacity-20
 }
 
 

@@ -5,33 +5,33 @@
       "line2": "Your Country"
     },
     "description": {
-      "line1": "The application provides the exact times of iftar and suhur, which are calculated automatically according to the user's geographical location.",
+      "line1": "The application provides the exact times of iftar and suhoor, which are calculated automatically according to the user's geographical location.",
       "line2": "",
       "line3": "is determined by",
       "line4": "and",
       "line5": "is determined by"
     },
     "iftar": "Iftar Time",
-    "suhur": "Suhur Time",
+    "suhoor": "Suhoor Time",
     "sunset": "sunset",
     "nauticalDawn": "nautical dawn",
     "chooseLocation": "Choose your location",
     "dua": "Iftar Dua "
   },
 
-   "location": {
+   "times": {
     "title": "Select your location",
     "kosovoCities": "Kosova",
     "albaniaCities": "Albania",
     "chooseCity": "Choose your city",
-    "getFastingTimes": "Get fasting times",
+    "getFastingTimes": "Done",
     "searchOnline": "Or search your city online",
     "searchPlaceholder": "Search city...",
     "search": "Search",
     "loading": "Loading...",
     "date": "Date",
     "iftar": "Iftar (Sunset)",
-    "suhur": "Suhur (Nautical Dawn)",
+    "suhoor": "Suhoor (Nautical Dawn)",
     "unknownCountry": "Unknown country",
     "timeUntilIftar": "Time left until Iftar:",
     "iftarPassed": "Iftar time has passed.",

@@ -3,15 +3,15 @@ import { useLocation } from "react-router-dom";
 
 export const Header = () => {
   const { i18n } = useTranslation();
-  const location = useLocation();
+  const times = useLocation();
 
   const currentLang = i18n.language.startsWith("al") ? "al" : "en";
 
   const active =
-    location.pathname === "/dua"
+    times.pathname === "/dua"
       ? "dua"
-      : location.hash === "#location"
-      ? "location"
+      : times.hash === "#times"
+      ? "times"
       : "home";
 
   const changeLanguage = (lang) => {
@@ -35,35 +35,35 @@ export const Header = () => {
 
   return (
     <div className="fixed top-3 w-full z-20 flex justify-center items-center px-2">
-<nav className="flex items-center gap-2 p-1.5 border border-white/15 rounded-full bg-white/10 backdrop-blur">
+      <nav className="flex items-center gap-2 p-1.5 border border-white/15 rounded-full bg-white/10 backdrop-blur">
 
-  <a href="/#home" className={navClass("home")}>
-    Home
-  </a>
+        <a href="/#home" className={navClass("home")}>
+          Home
+        </a>
 
-  <a href="/#location" className={navClass("location")}>
-    Times
-  </a>
+        <a href="/#times" className={navClass("times")}>
+          Times
+        </a>
 
-  <span className="h-4 w-px bg-white/20 mx-1"></span>
+          <span className="h-4 w-px bg-white/20 mx-1"></span>
 
-  <button
-    type="button"
-    onClick={() => changeLanguage("al")}
-    className={langClass("al")}
-  >
-    AL
-  </button>
+        <button
+          type="button"
+          onClick={() => changeLanguage("al")}
+          className={langClass("al")}
+        >
+          AL
+        </button>
 
-  <button
-    type="button"
-    onClick={() => changeLanguage("en")}
-    className={langClass("en")}
-  >
-    EN
-  </button>
+        <button
+          type="button"
+          onClick={() => changeLanguage("en")}
+          className={langClass("en")}
+        >
+          EN
+        </button>
 
-</nav>
+      </nav>
     </div>
   );
 };

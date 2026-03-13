@@ -5,6 +5,7 @@ It automatically calculates these times using "sunset" for IFTAR and "nautical d
 
 🔗 **Live Demo:** [Fasting Timer](https://fastingtime.onrender.com/)
 
+## Features
 Choose from cities in Kosovo and Albania.
 Manually search any city in the world.
 Display of:

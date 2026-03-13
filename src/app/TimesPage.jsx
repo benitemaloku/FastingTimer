@@ -1,14 +1,11 @@
 import { useMemo, useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-
 const kosovoCities = [
   "Artana", "Dardana", "Deçan", "Sharr", "Drenas", "Ferizaj", "Fushë Kosovë",
   "Gjakovë", "Gjilan", "Graçanicë", "Hani i Elezit", "Burim", "Junik", "Kaçanik",
-
-  "Klinë", "Kllokot", "Albanik", "Lipjan", "Malishevë","Kijevë", "Mamushë", "Mitrovicë",
+  "Klinë", "Kllokot", "Albanik", "Lipjan", "Malishevë", "Kijevë", "Mamushë", "Mitrovicë",
   "Mitrovica Veriore", "Kastriot", "Partesh", "Pejë", "Besianë", "Prishtinë",
-  
   "Prizren", "Rahovec", "Shtërpcë", "Shtime", "Skënderaj",
   "Therandë", "Vitia", "Vushtrri", "Zubin Potok", "Zveçan",
 ];
@@ -16,20 +13,15 @@ const kosovoCities = [
 const albaniaCities = [
   "Tiranë", "Durrës", "Elbasan", "Shkodër", "Vlorë", "Korçë",
   "Fier", "Berat", "Lushnjë", "Kavajë", "Pogradec", "Laç",
-
   "Gjirokastër", "Patos", "Krujë", "Kuçovë", "Kukës", "Lezhë",
   "Sarandë", "Peshkopi", "Burrel", "Cërrik", "Çorovodë", "Shijak",
-
   "Librazhd", "Tepelenë", "Gramsh", "Poliçan", "Bulqizë", "Përmet",
   "Fushë-Krujë", "Kamëz", "Rrëshen", "Ballsh", "Mamurras", "Bajram Curri",
-
   "Ersekë", "Divjakë", "Selenicë", "Bilisht", "Roskovec",
   "Pukë", "Memaliaj", "Rrogozhinë", "Ura Vajgurore", "Himarë", "Delvinë",
-
   "Vorë", "Koplik", "Maliq", "Përrenjas", "Krumë", "Libohovë",
   "Orikum", "Fushë-Arrëz", "Shëngjin", "Rubik", "Milot", "Leskovik",
-
-  "Konispol", "Këlcyrë", "Krastë", 
+  "Konispol", "Këlcyrë", "Krastë",
 ];
 
 export default function TimesPage() {
@@ -46,7 +38,7 @@ export default function TimesPage() {
 
   useEffect(() => {
     if (result) {
-     resultRef.current?.scrollIntoView({
+      resultRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
@@ -74,13 +66,13 @@ export default function TimesPage() {
 
       if (data.status !== "OK") throw new Error();
 
-        setResult({
-          city: selectedCity,
-          country: selectedCountry,
-          label,
-          sunset: data.results.sunset,
-          nauticalDawn: data.results.nautical_twilight_begin,
-        });
+      setResult({
+        city: selectedCity,
+        country: selectedCountry,
+        label,
+        sunset: data.results.sunset,
+        nauticalDawn: data.results.nautical_twilight_begin,
+      });
     } catch {
       setError(t("times.errors.failedSunData"));
     }
@@ -153,28 +145,33 @@ export default function TimesPage() {
     new Date(value).toLocaleTimeString(isAlbanian ? "al-AL" : "en-GB", {
       hour: "2-digit",
       minute: "2-digit",
+      hour12: false,
     });
 
-  const getTimeUntilIftar = (sunset) => {
-    if (!sunset) return "";
+  const getIftarStatus = (nauticalDawn, sunset) => {
+    if (!nauticalDawn || !sunset) return "";
 
     const now = new Date();
+    const suhoorTime = new Date(nauticalDawn);
     const iftarTime = new Date(sunset);
+
+    if (now < suhoorTime || now >= iftarTime) {
+      return isAlbanian
+        ? "Koha e iftarit ka kaluar"
+        : "Iftar time has passed";
+    }
+
     const diff = iftarTime - now;
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-    if (diff <= 0) {
-      return t("times.iftarPassed");
-  }
+    if (isAlbanian) {
+      return `${hours} orë e ${minutes} minuta`;
+    }
 
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    return `${hours}h ${minutes}min`;
+  };
 
-  if (i18n.language === "al") {
-    return `${hours} h ${minutes} minuta`;
-  }
-  return `${hours} h ${minutes} minutes`;
-
-};
   return (
     <section className="min-h-screen px-4 pt-28 pb-10 sm:px-6 sm:pt-32 sm:pb-16">
       <div className="mx-auto w-full max-w-2xl">
@@ -182,115 +179,99 @@ export default function TimesPage() {
           {t("times.title")}
         </h1>
 
-       <div className="mx-auto w-full max-w-xl space-y-4">
+        <div className="mx-auto w-full max-w-xl space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button
+              onClick={() => {
+                setCountry("Kosovo");
+                setCity("");
+              }}
+              className={`h-12 border rounded-xl px-6 text-sm font-semibold transition ${
+                country === "Kosovo"
+                  ? "border-white bg-white/10 text-[#BDC4D4]"
+                  : "border-white/15 text-[#BDC4D4]"
+              }`}
+            >
+              {t("times.kosovoCities")}
+            </button>
 
-      {/* Country buttons */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <button
-          onClick={() => {
-            setCountry("Kosovo");
-            setCity("");
-          }}
-          className={`h-12 border rounded-xl px-6 text-sm font-semibold transition ${
-            country === "Kosovo"
-              ? "border-white bg-white/10 text-[#BDC4D4]"
-              : "border-white/15 text-[#BDC4D4]"
-          }`}
-        >
-          {t("times.kosovoCities")}
-        </button>
+            <button
+              onClick={() => {
+                setCountry("Albania");
+                setCity("");
+              }}
+              className={`h-12 border rounded-xl px-6 text-sm font-semibold transition ${
+                country === "Albania"
+                  ? "border-white bg-white/10 text-[#BDC4D4]"
+                  : "border-white/15 text-[#BDC4D4]"
+              }`}
+            >
+              {t("times.albaniaCities")}
+            </button>
+          </div>
 
-        <button
-          onClick={() => {
-            setCountry("Albania");
-            setCity("");
-          }}
-          className={`h-12 border rounded-xl px-6 text-sm font-semibold transition ${
-            country === "Albania"
-              ? "border-white bg-white/10 text-[#BDC4D4]"
-              : "border-white/15 text-[#BDC4D4]"
-          }`}
-        >
-          {t("times.albaniaCities")}
-        </button>
-      </div>
-
-      {/* Select city */}
-      <select
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-        className="w-full h-12 border border-white/15 bg-transparent rounded-xl px-6 text-sm font-semibold text-[#BDC4D4] outline-none"
-      >
-        <option value="" className="bg-gray-800 text-white">
-          {t("times.chooseCity")}
-        </option>
-
-        {cities.map((c) => (
-          <option
-            key={c}
-            value={c}
-            className="bg-gray-800 text-white"
+          <select
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            className="w-full h-12 border border-white/15 bg-transparent rounded-xl px-6 text-sm font-semibold text-[#BDC4D4] outline-none"
           >
-            {c}
-          </option>
-        ))}
-      </select>
+            <option value="" className="bg-[#1C2E4A] text-white">
+              {t("times.chooseCity")}
+            </option>
 
-      {/* Submit */}
-      <button
-        onClick={handlePresetSubmit}
-        className="w-full ui-button"
-      >
-        {t("times.getFastingTimes")}
-      </button>
+            {cities.map((c) => (
+              <option key={c} value={c} className="bg-gray-700 text-white">
+                {c}
+              </option>
+            ))}
+          </select>
 
-      {/* Search section */}
-      <div className="pt-4 border-t border-white/10 space-y-3">
+          <button onClick={handlePresetSubmit} className="w-full ui-button">
+            {t("times.getFastingTimes")}
+          </button>
 
-        <p className="text-sm text-[#BDC4D4]">
-          {t("times.searchOnline")}
-        </p>
+          <div className="pt-4 border-t border-white/10 space-y-3">
+            <p className="text-sm text-[#BDC4D4]">
+              {t("times.searchOnline")}
+            </p>
 
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleSearchSubmit();
-          }}
-          placeholder={t("times.searchPlaceholder")}
-          className="w-full ui-input"
-        />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSearchSubmit();
+              }}
+              placeholder={t("times.searchPlaceholder")}
+              className="w-full ui-input"
+            />
 
-        <button
-          onClick={handleSearchSubmit}
-          className="ui-button w-full"
-        >
-          {t("times.search")}
-        </button>
-      </div>
-    </div>
-
-      {loading && (
-        <div className="mt-6 sm:mt-8 text-center text-[#BDC4D4] text-base sm:text-lg">
-          {t("times.loading")}
+            <button onClick={handleSearchSubmit} className="ui-button w-full">
+              {t("times.search")}
+            </button>
+          </div>
         </div>
-      )}
 
-      {error && (
-        <div className="mt-6 sm:mt-8 text-center text-red-300 text-sm sm:text-base md:text-lg px-2">
-          {error}
-        </div>
-      )}
+        {loading && (
+          <div className="mt-6 sm:mt-8 text-center text-[#BDC4D4] text-base sm:text-lg">
+            {t("times.loading")}
+          </div>
+        )}
 
-      {result && (
+        {error && (
+          <div className="mt-6 sm:mt-8 text-center text-red-300 text-sm sm:text-base md:text-lg px-2">
+            {error}
+          </div>
+        )}
+
+        {result && (
           <div
             ref={resultRef}
             className="mx-auto w-full max-w-xl mt-6 sm:mt-8 rounded-[24px] sm:rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-md p-4 sm:p-6 md:p-7 shadow-[0_10px_40px_rgba(0,0,0,0.25)]"
           >
-            <h2 className="text-1xl  text-[#BDC4D4] mb-3 text-center break-words tracking-wide">
-                {result.city}
-              </h2>
+            <h2 className="text-1xl text-[#BDC4D4] mb-3 text-center break-words tracking-wide">
+              {result.city}
+            </h2>
 
             {result.label && (
               <p className="text-xs sm:text-sm text-[#94a3b8] mb-4 sm:mb-5 text-center break-words leading-relaxed">
@@ -298,18 +279,19 @@ export default function TimesPage() {
               </p>
             )}
 
-            <div className="text-center space-y-3 text-[#BDC4D4] text-sm ">
+            <div className="text-center space-y-3 text-[#BDC4D4] text-sm">
               <p className="break-words">
-                  <strong>{t("times.date")}:</strong> {today}
+                <strong>{t("times.date")}:</strong> {today}
               </p>
               <p className="break-words">
-                  <strong>{t("times.suhoor")}:</strong> {formatTime(result.nauticalDawn)}
+                <strong>{t("times.suhoor")}:</strong> {formatTime(result.nauticalDawn)}
               </p>
               <p className="break-words">
-                  <strong>{t("times.iftar")}:</strong> {formatTime(result.sunset)}
+                <strong>{t("times.iftar")}:</strong> {formatTime(result.sunset)}
               </p>
               <p className="break-words">
-                  <strong>{t("times.timeUntilIftar")}</strong> {getTimeUntilIftar(result.sunset)}
+                <strong>{t("times.timeUntilIftar")}</strong>{" "}
+                {getIftarStatus(result.nauticalDawn, result.sunset)}
               </p>
             </div>
           </div>

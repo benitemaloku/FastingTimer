@@ -3,7 +3,7 @@ import grainImage from "../assets/images/grain.jpg";
 
 export default function MainLayout({ children }) {
   return (
-    <div className="min-h-screen bg-[#0F1A2B] text-[#BDC4D4] antialiased font-sans relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#1C2E4A] text-[#BDC4D4] antialiased font-sans relative overflow-x-hidden">
       <div
         className="absolute inset-0 opacity-10 pointer-events-none"
         style={{

@@ -35,20 +35,6 @@ html {
  @apply h-12 border border-white/15 bg-transparent rounded-xl px-6 text-sm font-semibold text-[#BDC4D4] outline-none placeholder:text-[#BDC4D4]/60
 }
 
-
-
-/* canvas- styles */
-.canvas-loader {
-  font-size: 10px;
-  width: 1em;
-  height: 1em;
-  border-radius: 50%;
-  position: relative;
-  text-indent: -9999em;
-  animation: mulShdSpin 1.1s infinite ease;
-  transform: translateZ(0);
-}
-
 @keyframes mulShdSpin {
   0%,
   100% {

@@ -34,7 +34,7 @@ export default function DuaPage() {
                 <p className="text-xs text-center leading-7">
                   {t("dua.source")}
                        <br/>
-                  {t("dua.translator")}
+               
                 </p>
               </div>
 

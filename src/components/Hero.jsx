@@ -29,7 +29,7 @@ export const HeroSection = ({ onChooseTimes }) => {
         <img src={starIcon} alt="star" className="size-8 bg-stars" />
       </HeroOrbit>
 
-      <HeroOrbit size={430} rotation={-14}>
+      <HeroOrbit size={520} rotation={-14}>
         <img src={sparkleIcon} alt="sparkle" className="size-8 bg-sparkle" />
       </HeroOrbit>
       <HeroOrbit size={440} rotation={79}>
@@ -82,15 +82,17 @@ export const HeroSection = ({ onChooseTimes }) => {
           <button
             type="button"
             onClick={() => navigate("/dua")}
-            className="inline-flex items-center justify-center gap-2 border border-white/15 px-6 h-12 rounded-xl bg-white/60 text-gray-900 text-sm hover:bg-white/10 transition"
+            className="inline-flex items-center justify-center gap-2 border border-white/15 px-6 h-12 rounded-xl bg-white/60 text-gray-800 text-sm hover:bg-white/10 transition"
           >    <span>{t("hero.dua")}</span>
-            <img src={ArrowUpRight} alt="arrow up right" className="size-4 brightness-0" />
+            <img src={ArrowUpRight} alt="arrow up right"
+            className="size-4 brightness-0 invert-[18%] sepia-[14%] saturate-[800%] hue-rotate-[188deg]"
+          />
           </button>
             
           <button
             type="button"
             onClick={onChooseTimes}
-            className="inline-flex items-center justify-center gap-2 border border-white/15 px-6 h-12 rounded-xl bg-white/5 text-[#BDC4D4] text-sm hover:bg-white/10 transition"
+            className="inline-flex items-center justify-center gap-2 border border-white/15 px-6 h-12 rounded-xl bg-white/5 text-[#ffff] text-sm hover:bg-white/10 transition"
           >
             <span>{t("hero.chooseLocation")}</span>
             <img src={ArrowDown} alt="arrow down" className="size-4 invert" />

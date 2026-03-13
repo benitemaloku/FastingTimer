@@ -20,7 +20,7 @@ Clone the repository:
 ```bash
 git clone https://github.com/benitemaloku/FastingTimer.git
 ```
-
+Setup
 ```bash
 npm install
 npm run dev

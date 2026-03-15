@@ -148,53 +148,53 @@ export default function TimesPage() {
       hour12: false,
     });
 
-    const getIftarStatus = (nauticalDawn, sunset) => {
-      if (!nauticalDawn || !sunset) return "";
+ const getIftarStatus = (nauticalDawn, sunset) => {
+    if (!nauticalDawn || !sunset) return "";
 
-      const now = new Date();
-      const suhoorTime = new Date(nauticalDawn);
-      const iftarTime = new Date(sunset);
+    const now = new Date();
+    const suhoorTime = new Date(nauticalDawn);
+    const iftarTime = new Date(sunset);
 
-      let targetTime;
-      let label;
+    let targetTime;
+    let label;
 
-      if (now < iftarTime && now >= suhoorTime) {
-        targetTime = iftarTime;
-        label = isAlbanian ? "Koha e mbetur deri në Iftar" : "Time left until Iftar";
-      } 
-      
-      else {
-        const nextSuhoor = new Date(suhoorTime);
-        if (now >= iftarTime) {
-          nextSuhoor.setDate(nextSuhoor.getDate() + 1);
-        }
-
-        targetTime = nextSuhoor;
-        label = isAlbanian ? "Koha e mbetur deri në Syfyr" : "Time left until Suhoor";
+    if (now < iftarTime && now >= suhoorTime) {
+      targetTime = iftarTime;
+      label = isAlbanian
+        ? "Koha e mbetur deri në Iftar"
+        : "Time left until Iftar";
+    } else {
+      const nextSuhoor = new Date(suhoorTime);
+      if (now >= iftarTime) {
+        nextSuhoor.setDate(nextSuhoor.getDate() + 1);
       }
 
-      const diff = targetTime - now;
+      targetTime = nextSuhoor;
+      label = isAlbanian
+        ? "Koha e mbetur deri në Syfyr"
+        : "Time left until Suhoor";
+    }
 
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const diff = targetTime - now;
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-      let timeText;
+    let timeText;
 
-      if (isAlbanian) {
-        timeText =
-          hours === 0
-            ? `${minutes} minuta`
-            : `${hours} orë e ${minutes} minuta`;
-      } else {
-        timeText =
-          hours === 0
-            ? `${minutes}min`
-            : `${hours}h ${minutes}min`;
-      }
+    if (isAlbanian) {
+      timeText =
+        hours === 0
+          ? `${minutes} minuta`
+          : `${hours} orë e ${minutes} minuta`;
+    } else {
+      timeText =
+        hours === 0
+          ? `${minutes}min`
+          : `${hours}h ${minutes}min`;
+    }
 
-      return `${label}: ${timeText}`;
-    };
-
+    return `${label}: ${timeText}`;
+  };
   return (
     <section className="min-h-screen px-4 pt-28 pb-10 sm:px-6 sm:pt-32 sm:pb-16">
       <div className="mx-auto w-full max-w-2xl">
@@ -312,7 +312,7 @@ export default function TimesPage() {
               <p className="break-words">
                 <strong>{t("times.iftar")} </strong> - {t("times.astronomicaliftar")}: {formatTime(result.sunset)}
               </p>
-              <p className="break-words">
+              <p className="break-words leading-relaxed">
                 {getIftarStatus(result.nauticalDawn, result.sunset)}
               </p>
             </div>

@@ -148,29 +148,52 @@ export default function TimesPage() {
       hour12: false,
     });
 
-  const getIftarStatus = (nauticalDawn, sunset) => {
-    if (!nauticalDawn || !sunset) return "";
+    const getIftarStatus = (nauticalDawn, sunset) => {
+      if (!nauticalDawn || !sunset) return "";
 
-    const now = new Date();
-    const suhoorTime = new Date(nauticalDawn);
-    const iftarTime = new Date(sunset);
+      const now = new Date();
+      const suhoorTime = new Date(nauticalDawn);
+      const iftarTime = new Date(sunset);
 
-    if (now < suhoorTime || now >= iftarTime) {
-      return isAlbanian
-        ? "Koha e iftarit ka kaluar"
-        : "Iftar time has passed";
-    }
+      let targetTime;
+      let label;
 
-    const diff = iftarTime - now;
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      if (now < iftarTime && now >= suhoorTime) {
+        targetTime = iftarTime;
+        label = isAlbanian ? "Koha e mbetur deri në Iftar" : "Time left until Iftar";
+      } 
+      
+      else {
+        const nextSuhoor = new Date(suhoorTime);
+        if (now >= iftarTime) {
+          nextSuhoor.setDate(nextSuhoor.getDate() + 1);
+        }
 
-    if (isAlbanian) {
-      return `${hours} orë e ${minutes} minuta`;
-    }
+        targetTime = nextSuhoor;
+        label = isAlbanian ? "Koha e mbetur deri në Syfyr" : "Time left until Suhoor";
+      }
 
-    return `${hours}h ${minutes}min`;
-  };
+      const diff = targetTime - now;
+
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+      let timeText;
+
+      if (isAlbanian) {
+        timeText =
+          hours === 0
+            ? `${minutes} minuta`
+            : `${hours} orë e ${minutes} minuta`;
+      } else {
+        timeText =
+          hours === 0
+            ? `${minutes}min`
+            : `${hours}h ${minutes}min`;
+      }
+
+      return `${label}: ${timeText}`;
+    };
 
   return (
     <section className="min-h-screen px-4 pt-28 pb-10 sm:px-6 sm:pt-32 sm:pb-16">
@@ -281,16 +304,15 @@ export default function TimesPage() {
 
             <div className="text-center space-y-3 text-[#BDC4D4] text-sm">
               <p className="break-words">
-                <strong>{t("times.date")}:</strong> {today}
+                {t("times.date")}: {today}
               </p>
               <p className="break-words">
-                <strong>{t("times.suhoor")}:</strong> {formatTime(result.nauticalDawn)}
+                <strong>{t("times.suhoor")} </strong> - {t("times.astronomicalsuhoor")}: {formatTime(result.nauticalDawn)}
               </p>
               <p className="break-words">
-                <strong>{t("times.iftar")}:</strong> {formatTime(result.sunset)}
+                <strong>{t("times.iftar")} </strong> - {t("times.astronomicaliftar")}: {formatTime(result.sunset)}
               </p>
               <p className="break-words">
-                <strong>{t("times.timeUntilIftar")}</strong>{" "}
                 {getIftarStatus(result.nauticalDawn, result.sunset)}
               </p>
             </div>

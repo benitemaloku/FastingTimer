@@ -160,9 +160,7 @@ export default function TimesPage() {
 
     if (now < iftarTime && now >= suhoorTime) {
       targetTime = iftarTime;
-      label = isAlbanian
-        ? "Koha e mbetur deri në Iftar"
-        : "Time left until Iftar";
+      label = t("times.untilIftar");
     } else {
       const nextSuhoor = new Date(suhoorTime);
       if (now >= iftarTime) {
@@ -170,9 +168,7 @@ export default function TimesPage() {
       }
 
       targetTime = nextSuhoor;
-      label = isAlbanian
-        ? "Koha e mbetur deri në Syfyr"
-        : "Time left until Suhoor";
+      label = t("times.untilSuhoor");
     }
 
     const diff = targetTime - now;

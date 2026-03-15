@@ -34,9 +34,11 @@
     "suhoor": "Suhoor",
     "astronomicalsuhoor": "Nautical Dawn",
     "astronomicaliftar" :"Sunset",
+    "untilIftar": "Time left until Iftar",
+    "untilSuhoor": "Time left until Suhoor",
     "unknownCountry": "Unknown country",
     "errors": {
-      "failedSunData": "Failed to fetch data.",
+      "failedSunData": "Failed to fetch sun data.",
       "chooseCity": "Please choose a city first.",
       "loadCity": "Could not load data for selected city.",
       "enterCity": "Please enter a city name.",

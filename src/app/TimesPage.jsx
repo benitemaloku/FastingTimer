@@ -286,7 +286,7 @@ export default function TimesPage() {
         {result && (
           <div
             ref={resultRef}
-            className="mx-auto w-full max-w-xl mt-6 sm:mt-8 rounded-[24px] sm:rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-md p-4 sm:p-6 md:p-7 shadow-[0_10px_40px_rgba(0,0,0,0.25)]"
+            className="mx-auto w-full max-w-xl mt-6 sm:mt-8 rounded-[24px] sm:rounded-[28px] border border-white/10 bg-white/10 p-4 sm:p-6 md:p-7 shadow-[0_10px_40px_rgba(0,0,0,0.25)]"
           >
             <h2 className="text-1xl text-[#BDC4D4] mb-3 text-center break-words tracking-wide">
               {result.city}

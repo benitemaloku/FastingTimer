@@ -143,7 +143,7 @@ export default function TimesPage() {
     }
   );
 
-  const fetchSunData = async (
+ const fetchSunData = async (
     lat,
     lng,
     selectedCity,
@@ -151,30 +151,57 @@ export default function TimesPage() {
     label = ""
   ) => {
     try {
-      const url = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`;
+      const res = await fetch(
+        `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`
+      );
 
-       const res = await fetch(url);
-      
-      if (!res.ok) {
-        throw new Error("Failed to fetch sun data");
-      }
+      if (!res.ok) throw new Error();
 
       const data = await res.json();
 
-      if (data.status !== "OK" || !data.results) {
-        throw new Error("Invalid API response");
+      if (!data?.results?.sunset || !data?.results?.nautical_twilight_begin) {
+        throw new Error();
       }
 
       setResult({
         city: selectedCity,
         country: selectedCountry,
         label,
-        sunset: data.results.sunset,
-        suhoor: data.results.nautical_twilight_begin,
+        sunset: data.results.sunset, 
+        suhoor: data.results.nautical_twilight_begin, 
       });
     } catch (err) {
-      console.error("Sun data fetch error:", err);
+      console.error(err);
       setError(t("times.errors.failedSunData"));
+    }
+  };
+
+  const handlePresetSubmit = async () => {
+    if (!city) {
+      setError(t("times.errors.chooseCity"));
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError("");
+      setResult(null);
+
+      const query = encodeURIComponent(`${city}, ${country}`);
+      const geoRes = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${query}&format=jsonv2&limit=1`
+      );
+      const geoData = await geoRes.json();
+
+      if (!geoData.length) throw new Error();
+
+      const { lat, lon, display_name } = geoData[0];
+
+      await fetchSunData(lat, lon, city, country, display_name);
+    } catch {
+      setError(t("times.errors.loadCity"));
+    } finally {
+      setLoading(false);
     }
   };
 

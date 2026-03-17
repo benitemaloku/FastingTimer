@@ -57,28 +57,32 @@ export default function TimesPage() {
     year: "numeric",
   });
 
-  const fetchSunData = async (lat, lng, selectedCity, selectedCountry, label = "") => {
-    try {
-      const res = await fetch(
-        `https://api.allorigins.win/raw?url=${encodeURIComponent(
-          `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`
-        )}`
-      );
-      const data = await res.json();
+const fetchSunData = async (lat, lng, selectedCity, selectedCountry, label = "") => {
+  try {
+    const res = await fetch(
+      `https://api.allorigins.win/raw?url=${encodeURIComponent(
+        `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`
+      )}`
+    );
 
-      if (data.status !== "OK") throw new Error();
+    if (!res.ok) throw new Error("Failed to fetch sun data");
 
-      setResult({
-        city: selectedCity,
-        country: selectedCountry,
-        label,
-        sunset: data.results.sunset,
-        nauticalDawn: data.results.nautical_twilight_begin,
-      });
-    } catch {
-      setError(t("times.errors.failedSunData"));
-    }
-  };
+    const data = await res.json();
+
+    if (data.status !== "OK") throw new Error("Invalid API response");
+
+    setResult({
+      city: selectedCity,
+      country: selectedCountry,
+      label,
+      sunset: data.results.sunset,
+      nauticalDawn: data.results.nautical_twilight_begin,
+    });
+  } catch (err) {
+    console.error("Sun data fetch error:", err);
+    setError(t("times.errors.failedSunData"));
+  }
+};
 
   const handlePresetSubmit = async () => {
     if (!city) {

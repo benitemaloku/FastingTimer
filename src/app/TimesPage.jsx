@@ -68,12 +68,10 @@ export default function TimesPage() {
     label = ""
   ) => {
     try {
-      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const url = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`;
 
       const res = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=sunrise,sunset&timezone=${encodeURIComponent(
-          timezone
-        )}&forecast_days=1`
+        `https://corsproxy.io/?${encodeURIComponent(url)}`
       );
 
       if (!res.ok) {
@@ -82,11 +80,7 @@ export default function TimesPage() {
 
       const data = await res.json();
 
-      if (
-        !data?.daily ||
-        !data.daily.sunrise?.length ||
-        !data.daily.sunset?.length
-      ) {
+      if (data.status !== "OK" || !data.results) {
         throw new Error("Invalid API response");
       }
 
@@ -94,8 +88,8 @@ export default function TimesPage() {
         city: selectedCity,
         country: selectedCountry,
         label,
-        sunset: data.daily.sunset[0],
-        suhoor: data.daily.sunrise[0],
+        sunset: data.results.sunset,
+        nauticalDawn: data.results.nautical_twilight_begin,
       });
     } catch (err) {
       console.error("Sun data fetch error:", err);
@@ -173,11 +167,11 @@ export default function TimesPage() {
       hour12: false,
     });
 
-  const getIftarStatus = (suhoor, sunset) => {
-    if (!suhoor || !sunset) return "";
+  const getIftarStatus = (nauticalDawn, sunset) => {
+    if (!nauticalDawn || !sunset) return "";
 
     const now = new Date();
-    const suhoorTime = new Date(suhoor);
+    const suhoorTime = new Date(nauticalDawn);
     const iftarTime = new Date(sunset);
 
     let targetTime;
@@ -330,17 +324,17 @@ export default function TimesPage() {
               </p>
 
               <p className="break-words">
-                <strong>{t("times.suhoor")} </strong> - {t("times.sunrise")}:{" "}
-                {formatTime(result.suhoor)}
+                <strong>{t("times.suhoor")} </strong> - {t("times.astronomicalsuhoor")}:{" "}
+                {formatTime(result.nauticalDawn)}
               </p>
 
               <p className="break-words">
-                <strong>{t("times.iftar")} </strong> - {t("times.sunset")}:{" "}
+                <strong>{t("times.iftar")} </strong> - {t("times.astronomicaliftar")}:{" "}
                 {formatTime(result.sunset)}
               </p>
 
               <p className="break-words leading-relaxed">
-                {getIftarStatus(result.suhoor, result.sunset)}
+                {getIftarStatus(result.nauticalDawn, result.sunset)}
               </p>
             </div>
           </div>

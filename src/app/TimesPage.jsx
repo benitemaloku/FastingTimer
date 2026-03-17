@@ -51,48 +51,29 @@ export default function TimesPage() {
     return country === "Kosovo" ? kosovoCities : albaniaCities;
   }, [country]);
 
-  const today = new Date().toLocaleDateString(
-    isAlbanian ? "al-AL" : "en-GB",
-    {
-      day: "numeric",
-      month: "numeric",
-      year: "numeric",
-    }
-  );
+  const today = new Date().toLocaleDateString(isAlbanian ? "al-AL" : "en-GB", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+  });
 
-  const fetchSunData = async (
-    lat,
-    lng,
-    selectedCity,
-    selectedCountry,
-    label = ""
-  ) => {
+  const fetchSunData = async (lat, lng, selectedCity, selectedCountry, label = "") => {
     try {
-      const url = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`;
-
       const res = await fetch(
-        `https://corsproxy.io/?${encodeURIComponent(url)}`
+        `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`
       );
-
-      if (!res.ok) {
-        throw new Error("Failed to fetch sun data");
-      }
-
       const data = await res.json();
 
-      if (data.status !== "OK" || !data.results) {
-        throw new Error("Invalid API response");
-      }
+      if (data.status !== "OK") throw new Error();
 
       setResult({
         city: selectedCity,
         country: selectedCountry,
         label,
         sunset: data.results.sunset,
-        suhoor: data.results.nautical_twilight_begin,
+        nauticalDawn: data.results.nautical_twilight_begin,
       });
-    } catch (err) {
-      console.error("Sun data fetch error:", err);
+    } catch {
       setError(t("times.errors.failedSunData"));
     }
   };
@@ -167,11 +148,11 @@ export default function TimesPage() {
       hour12: false,
     });
 
-  const getIftarStatus = (suhoor, sunset) => {
-    if (!suhoor || !sunset) return "";
+ const getIftarStatus = (nauticalDawn, sunset) => {
+    if (!nauticalDawn || !sunset) return "";
 
     const now = new Date();
-    const suhoorTime = new Date(suhoor);
+    const suhoorTime = new Date(nauticalDawn);
     const iftarTime = new Date(sunset);
 
     let targetTime;
@@ -210,7 +191,6 @@ export default function TimesPage() {
 
     return `${label}: ${timeText}`;
   };
-
   return (
     <section className="min-h-screen px-4 pt-28 pb-10 sm:px-6 sm:pt-32 sm:pb-16">
       <div className="mx-auto w-full max-w-2xl">
@@ -318,23 +298,18 @@ export default function TimesPage() {
               </p>
             )}
 
-          <div className="text-center space-y-3 text-[#BDC4D4] text-sm">
+            <div className="text-center space-y-3 text-[#BDC4D4] text-sm">
               <p className="break-words">
                 {t("times.date")}: {today}
               </p>
-          
               <p className="break-words">
-                <strong>{t("times.suhoor")} </strong> - {t("times.astronomicalsuhoor")}:{" "}
-                {formatTime(result.suhoor)}
+                <strong>{t("times.suhoor")} </strong> - {t("times.astronomicalsuhoor")}: {formatTime(result.nauticalDawn)}
               </p>
-          
               <p className="break-words">
-                <strong>{t("times.iftar")} </strong> - {t("times.astronomicaliftar")}:{" "}
-                {formatTime(result.sunset)}
+                <strong>{t("times.iftar")} </strong> - {t("times.astronomicaliftar")}: {formatTime(result.sunset)}
               </p>
-          
               <p className="break-words leading-relaxed">
-                {getIftarStatus(result.suhoor, result.sunset)}
+                {getIftarStatus(result.nauticalDawn, result.sunset)}
               </p>
             </div>
           </div>

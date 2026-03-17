@@ -51,38 +51,57 @@ export default function TimesPage() {
     return country === "Kosovo" ? kosovoCities : albaniaCities;
   }, [country]);
 
-  const today = new Date().toLocaleDateString(isAlbanian ? "al-AL" : "en-GB", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  });
+  const today = new Date().toLocaleDateString(
+    isAlbanian ? "al-AL" : "en-GB",
+    {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+    }
+  );
 
-const fetchSunData = async (lat, lng, selectedCity, selectedCountry, label = "") => {
-  try {
-    const res = await fetch(
-      `https://api.allorigins.win/raw?url=${encodeURIComponent(
-        `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`
-      )}`
-    );
+  const fetchSunData = async (
+    lat,
+    lng,
+    selectedCity,
+    selectedCountry,
+    label = ""
+  ) => {
+    try {
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    if (!res.ok) throw new Error("Failed to fetch sun data");
+      const res = await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=sunrise,sunset&timezone=${encodeURIComponent(
+          timezone
+        )}&forecast_days=1`
+      );
 
-    const data = await res.json();
+      if (!res.ok) {
+        throw new Error("Failed to fetch sun data");
+      }
 
-    if (data.status !== "OK") throw new Error("Invalid API response");
+      const data = await res.json();
 
-    setResult({
-      city: selectedCity,
-      country: selectedCountry,
-      label,
-      sunset: data.results.sunset,
-      nauticalDawn: data.results.nautical_twilight_begin,
-    });
-  } catch (err) {
-    console.error("Sun data fetch error:", err);
-    setError(t("times.errors.failedSunData"));
-  }
-};
+      if (
+        !data?.daily ||
+        !data.daily.sunrise?.length ||
+        !data.daily.sunset?.length
+      ) {
+        throw new Error("Invalid API response");
+      }
+
+      setResult({
+        city: selectedCity,
+        country: selectedCountry,
+        label,
+        sunset: data.daily.sunset[0],
+        suhoor: data.daily.sunrise[0],
+      });
+    } catch (err) {
+      console.error("Sun data fetch error:", err);
+      setError(t("times.errors.failedSunData"));
+    }
+  };
 
   const handlePresetSubmit = async () => {
     if (!city) {
@@ -154,11 +173,11 @@ const fetchSunData = async (lat, lng, selectedCity, selectedCountry, label = "")
       hour12: false,
     });
 
- const getIftarStatus = (nauticalDawn, sunset) => {
-    if (!nauticalDawn || !sunset) return "";
+  const getIftarStatus = (suhoor, sunset) => {
+    if (!suhoor || !sunset) return "";
 
     const now = new Date();
-    const suhoorTime = new Date(nauticalDawn);
+    const suhoorTime = new Date(suhoor);
     const iftarTime = new Date(sunset);
 
     let targetTime;
@@ -197,6 +216,7 @@ const fetchSunData = async (lat, lng, selectedCity, selectedCountry, label = "")
 
     return `${label}: ${timeText}`;
   };
+
   return (
     <section className="min-h-screen px-4 pt-28 pb-10 sm:px-6 sm:pt-32 sm:pb-16">
       <div className="mx-auto w-full max-w-2xl">
@@ -308,14 +328,19 @@ const fetchSunData = async (lat, lng, selectedCity, selectedCountry, label = "")
               <p className="break-words">
                 {t("times.date")}: {today}
               </p>
+
               <p className="break-words">
-                <strong>{t("times.suhoor")} </strong> - {t("times.astronomicalsuhoor")}: {formatTime(result.nauticalDawn)}
+                <strong>{t("times.suhoor")} </strong> - {t("times.sunrise")}:{" "}
+                {formatTime(result.suhoor)}
               </p>
+
               <p className="break-words">
-                <strong>{t("times.iftar")} </strong> - {t("times.astronomicaliftar")}: {formatTime(result.sunset)}
+                <strong>{t("times.iftar")} </strong> - {t("times.sunset")}:{" "}
+                {formatTime(result.sunset)}
               </p>
+
               <p className="break-words leading-relaxed">
-                {getIftarStatus(result.nauticalDawn, result.sunset)}
+                {getIftarStatus(result.suhoor, result.sunset)}
               </p>
             </div>
           </div>

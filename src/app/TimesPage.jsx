@@ -2,26 +2,109 @@ import { useMemo, useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 const kosovoCities = [
-  "Artana", "Dardana", "Deçan", "Sharr", "Drenas", "Ferizaj", "Fushë Kosovë",
-  "Gjakovë", "Gjilan", "Graçanicë", "Hani i Elezit", "Burim", "Junik", "Kaçanik",
-  "Klinë", "Kllokot", "Albanik", "Lipjan", "Malishevë", "Kijevë", "Mamushë", "Mitrovicë",
-  "Mitrovica Veriore", "Kastriot", "Partesh", "Pejë", "Besianë", "Prishtinë",
-  "Prizren", "Rahovec", "Shtërpcë", "Shtime", "Skënderaj",
-  "Therandë", "Vitia", "Vushtrri", "Zubin Potok", "Zveçan",
+  "Artana",
+  "Dardana",
+  "Deçan",
+  "Sharr",
+  "Drenas",
+  "Ferizaj",
+  "Fushë Kosovë",
+  "Gjakovë",
+  "Gjilan",
+  "Graçanicë",
+  "Hani i Elezit",
+  "Burim",
+  "Junik",
+  "Kaçanik",
+  "Klinë",
+  "Kllokot",
+  "Albanik",
+  "Lipjan",
+  "Malishevë",
+  "Kijevë",
+  "Mamushë",
+  "Mitrovicë",
+  "Mitrovica Veriore",
+  "Kastriot",
+  "Partesh",
+  "Pejë",
+  "Besianë",
+  "Prishtinë",
+  "Prizren",
+  "Rahovec",
+  "Shtërpcë",
+  "Shtime",
+  "Skënderaj",
+  "Therandë",
+  "Vitia",
+  "Vushtrri",
+  "Zubin Potok",
+  "Zveçan",
 ];
 
 const albaniaCities = [
-  "Tiranë", "Durrës", "Elbasan", "Shkodër", "Vlorë", "Korçë",
-  "Fier", "Berat", "Lushnjë", "Kavajë", "Pogradec", "Laç",
-  "Gjirokastër", "Patos", "Krujë", "Kuçovë", "Kukës", "Lezhë",
-  "Sarandë", "Peshkopi", "Burrel", "Cërrik", "Çorovodë", "Shijak",
-  "Librazhd", "Tepelenë", "Gramsh", "Poliçan", "Bulqizë", "Përmet",
-  "Fushë-Krujë", "Kamëz", "Rrëshen", "Ballsh", "Mamurras", "Bajram Curri",
-  "Ersekë", "Divjakë", "Selenicë", "Bilisht", "Roskovec",
-  "Pukë", "Memaliaj", "Rrogozhinë", "Ura Vajgurore", "Himarë", "Delvinë",
-  "Vorë", "Koplik", "Maliq", "Përrenjas", "Krumë", "Libohovë",
-  "Orikum", "Fushë-Arrëz", "Shëngjin", "Rubik", "Milot", "Leskovik",
-  "Konispol", "Këlcyrë", "Krastë",
+  "Tiranë",
+  "Durrës",
+  "Elbasan",
+  "Shkodër",
+  "Vlorë",
+  "Korçë",
+  "Fier",
+  "Berat",
+  "Lushnjë",
+  "Kavajë",
+  "Pogradec",
+  "Laç",
+  "Gjirokastër",
+  "Patos",
+  "Krujë",
+  "Kuçovë",
+  "Kukës",
+  "Lezhë",
+  "Sarandë",
+  "Peshkopi",
+  "Burrel",
+  "Cërrik",
+  "Çorovodë",
+  "Shijak",
+  "Librazhd",
+  "Tepelenë",
+  "Gramsh",
+  "Poliçan",
+  "Bulqizë",
+  "Përmet",
+  "Fushë-Krujë",
+  "Kamëz",
+  "Rrëshen",
+  "Ballsh",
+  "Mamurras",
+  "Bajram Curri",
+  "Ersekë",
+  "Divjakë",
+  "Selenicë",
+  "Bilisht",
+  "Roskovec",
+  "Pukë",
+  "Memaliaj",
+  "Rrogozhinë",
+  "Ura Vajgurore",
+  "Himarë",
+  "Delvinë",
+  "Vorë",
+  "Koplik",
+  "Maliq",
+  "Përrenjas",
+  "Krumë",
+  "Libohovë",
+  "Orikum",
+  "Fushë-Arrëz",
+  "Shëngjin",
+  "Rubik",
+  "Milot",
+  "Leskovik",
+  "Konispol",
+  "Këlcyrë",
+  "Krastë",
 ];
 
 export default function TimesPage() {
@@ -51,29 +134,48 @@ export default function TimesPage() {
     return country === "Kosovo" ? kosovoCities : albaniaCities;
   }, [country]);
 
-  const today = new Date().toLocaleDateString(isAlbanian ? "al-AL" : "en-GB", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  });
+  const today = new Date().toLocaleDateString(
+    isAlbanian ? "al-AL" : "en-GB",
+    {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+    }
+  );
 
-  const fetchSunData = async (lat, lng, selectedCity, selectedCountry, label = "") => {
+  const fetchSunData = async (
+    lat,
+    lng,
+    selectedCity,
+    selectedCountry,
+    label = ""
+  ) => {
     try {
+      const url = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`;
+
       const res = await fetch(
-        `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`
+        `https://corsproxy.io/?${encodeURIComponent(url)}`
       );
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch sun data");
+      }
+
       const data = await res.json();
 
-      if (data.status !== "OK") throw new Error();
+      if (data.status !== "OK" || !data.results) {
+        throw new Error("Invalid API response");
+      }
 
       setResult({
         city: selectedCity,
         country: selectedCountry,
         label,
         sunset: data.results.sunset,
-        nauticalDawn: data.results.nautical_twilight_begin,
+        suhoor: data.results.nautical_twilight_begin,
       });
-    } catch {
+    } catch (err) {
+      console.error("Sun data fetch error:", err);
       setError(t("times.errors.failedSunData"));
     }
   };
@@ -148,11 +250,11 @@ export default function TimesPage() {
       hour12: false,
     });
 
- const getIftarStatus = (nauticalDawn, sunset) => {
-    if (!nauticalDawn || !sunset) return "";
+  const getIftarStatus = (suhoor, sunset) => {
+    if (!suhoor || !sunset) return "";
 
     const now = new Date();
-    const suhoorTime = new Date(nauticalDawn);
+    const suhoorTime = new Date(suhoor);
     const iftarTime = new Date(sunset);
 
     let targetTime;
@@ -191,6 +293,7 @@ export default function TimesPage() {
 
     return `${label}: ${timeText}`;
   };
+
   return (
     <section className="min-h-screen px-4 pt-28 pb-10 sm:px-6 sm:pt-32 sm:pb-16">
       <div className="mx-auto w-full max-w-2xl">
@@ -302,14 +405,19 @@ export default function TimesPage() {
               <p className="break-words">
                 {t("times.date")}: {today}
               </p>
+
               <p className="break-words">
-                <strong>{t("times.suhoor")} </strong> - {t("times.astronomicalsuhoor")}: {formatTime(result.nauticalDawn)}
+                <strong>{t("times.suhoor")} </strong> - {t("times.astronomicalsuhoor")}:{" "}
+                {formatTime(result.suhoor)}
               </p>
+
               <p className="break-words">
-                <strong>{t("times.iftar")} </strong> - {t("times.astronomicaliftar")}: {formatTime(result.sunset)}
+                <strong>{t("times.iftar")} </strong> - {t("times.astronomicaliftar")}:{" "}
+                {formatTime(result.sunset)}
               </p>
+
               <p className="break-words leading-relaxed">
-                {getIftarStatus(result.nauticalDawn, result.sunset)}
+                {getIftarStatus(result.suhoor, result.sunset)}
               </p>
             </div>
           </div>

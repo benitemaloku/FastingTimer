@@ -153,10 +153,8 @@ export default function TimesPage() {
     try {
       const url = `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`;
 
-      const res = await fetch(
-        `https://corsproxy.io/?${encodeURIComponent(url)}`
-      );
-
+       const res = await fetch(url);
+      
       if (!res.ok) {
         throw new Error("Failed to fetch sun data");
       }

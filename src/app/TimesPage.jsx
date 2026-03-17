@@ -89,7 +89,7 @@ export default function TimesPage() {
         country: selectedCountry,
         label,
         sunset: data.results.sunset,
-        nauticalDawn: data.results.nautical_twilight_begin,
+        suhoor: data.results.nautical_twilight_begin,
       });
     } catch (err) {
       console.error("Sun data fetch error:", err);
@@ -167,11 +167,11 @@ export default function TimesPage() {
       hour12: false,
     });
 
-  const getIftarStatus = (nauticalDawn, sunset) => {
-    if (!nauticalDawn || !sunset) return "";
+  const getIftarStatus = (suhoor, sunset) => {
+    if (!suhoor || !sunset) return "";
 
     const now = new Date();
-    const suhoorTime = new Date(nauticalDawn);
+    const suhoorTime = new Date(suhoor);
     const iftarTime = new Date(sunset);
 
     let targetTime;
@@ -325,16 +325,16 @@ export default function TimesPage() {
 
               <p className="break-words">
                 <strong>{t("times.suhoor")} </strong> - {t("times.astronomicalsuhoor")}:{" "}
-                {formatTime(result.nauticalDawn)}
+                {formatTime(result.suhoor)}
               </p>
 
               <p className="break-words">
-                <strong>{t("times.iftar")} </strong> - {t("times.astronomicaliftar")}:{" "}
+                <strong>{t("times.iftar")} </strong> - {t("times.sunset")}:{" "}
                 {formatTime(result.sunset)}
               </p>
 
               <p className="break-words leading-relaxed">
-                {getIftarStatus(result.nauticalDawn, result.sunset)}
+                {getIftarStatus(result.suhoor, result.sunset)}
               </p>
             </div>
           </div>

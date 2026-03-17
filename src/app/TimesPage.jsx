@@ -60,7 +60,9 @@ export default function TimesPage() {
   const fetchSunData = async (lat, lng, selectedCity, selectedCountry, label = "") => {
     try {
       const res = await fetch(
-        `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(
+          `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`
+        )}`
       );
       const data = await res.json();
 

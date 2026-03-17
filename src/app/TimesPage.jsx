@@ -1,5 +1,6 @@
 import { useMemo, useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import SunCalc from "suncalc";
 
 const kosovoCities = [
   "Artana",
@@ -134,7 +135,9 @@ export default function TimesPage() {
     return country === "Kosovo" ? kosovoCities : albaniaCities;
   }, [country]);
 
-  const today = new Date().toLocaleDateString(
+  const todayDate = new Date();
+
+  const today = todayDate.toLocaleDateString(
     isAlbanian ? "al-AL" : "en-GB",
     {
       day: "numeric",
@@ -143,7 +146,7 @@ export default function TimesPage() {
     }
   );
 
-  // ✅ FIXED API
+  // ✅ SUNCalc (NO API, NO CORS)
   const fetchSunData = async (
     lat,
     lng,
@@ -152,15 +155,11 @@ export default function TimesPage() {
     label = ""
   ) => {
     try {
-      const res = await fetch(
-        `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`
-      );
+      const now = new Date();
 
-      if (!res.ok) throw new Error();
+      const times = SunCalc.getTimes(now, lat, lng);
 
-      const data = await res.json();
-
-      if (!data?.results?.sunset || !data?.results?.nautical_twilight_begin) {
+      if (!times?.sunset || !times?.nauticalDawn) {
         throw new Error();
       }
 
@@ -168,8 +167,8 @@ export default function TimesPage() {
         city: selectedCity,
         country: selectedCountry,
         label,
-        sunset: data.results.sunset, // ✅ string
-        suhoor: data.results.nautical_twilight_begin, // ✅ string
+        sunset: times.sunset,
+        suhoor: times.nauticalDawn,
       });
     } catch (err) {
       console.error(err);
@@ -272,6 +271,9 @@ export default function TimesPage() {
     }
 
     const diff = targetTime - now;
+
+    if (diff <= 0) return "";
+
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 

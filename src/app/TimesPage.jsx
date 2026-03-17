@@ -318,21 +318,21 @@ export default function TimesPage() {
               </p>
             )}
 
-            <div className="text-center space-y-3 text-[#BDC4D4] text-sm">
+          <div className="text-center space-y-3 text-[#BDC4D4] text-sm">
               <p className="break-words">
                 {t("times.date")}: {today}
               </p>
-
+          
               <p className="break-words">
                 <strong>{t("times.suhoor")} </strong> - {t("times.astronomicalsuhoor")}:{" "}
                 {formatTime(result.suhoor)}
               </p>
-
+          
               <p className="break-words">
-                <strong>{t("times.iftar")} </strong> - {t("times.sunset")}:{" "}
+                <strong>{t("times.iftar")} </strong> - {t("times.astronomicaliftar")}:{" "}
                 {formatTime(result.sunset)}
               </p>
-
+          
               <p className="break-words leading-relaxed">
                 {getIftarStatus(result.suhoor, result.sunset)}
               </p>

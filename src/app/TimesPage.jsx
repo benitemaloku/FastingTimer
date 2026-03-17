@@ -143,7 +143,8 @@ export default function TimesPage() {
     }
   );
 
- const fetchSunData = async (
+  // ✅ FIXED API
+  const fetchSunData = async (
     lat,
     lng,
     selectedCity,
@@ -167,8 +168,8 @@ export default function TimesPage() {
         city: selectedCity,
         country: selectedCountry,
         label,
-        sunset: data.results.sunset, 
-        suhoor: data.results.nautical_twilight_begin, 
+        sunset: data.results.sunset, // ✅ string
+        suhoor: data.results.nautical_twilight_begin, // ✅ string
       });
     } catch (err) {
       console.error(err);
@@ -197,34 +198,6 @@ export default function TimesPage() {
 
       const { lat, lon, display_name } = geoData[0];
 
-      await fetchSunData(lat, lon, city, country, display_name);
-    } catch {
-      setError(t("times.errors.loadCity"));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handlePresetSubmit = async () => {
-    if (!city) {
-      setError(t("times.errors.chooseCity"));
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setError("");
-      setResult(null);
-
-      const query = encodeURIComponent(`${city}, ${country}`);
-      const geoRes = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${query}&format=jsonv2&limit=1`
-      );
-      const geoData = await geoRes.json();
-
-      if (!geoData.length) throw new Error();
-
-      const { lat, lon, display_name } = geoData[0];
       await fetchSunData(lat, lon, city, country, display_name);
     } catch {
       setError(t("times.errors.loadCity"));

@@ -146,7 +146,6 @@ export default function TimesPage() {
     }
   );
 
-  // ✅ SUNCalc (NO API, NO CORS)
   const fetchSunData = async (
     lat,
     lng,
@@ -156,8 +155,16 @@ export default function TimesPage() {
   ) => {
     try {
       const now = new Date();
+      const dateForCalc = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate(),
+          12,
+          0,
+          0
+        );
 
-      const times = SunCalc.getTimes(now, lat, lng);
+      const times = SunCalc.getTimes(dateForCalc, Number(lat), Number(lng));
 
       if (!times?.sunset || !times?.nauticalDawn) {
         throw new Error();
@@ -171,7 +178,7 @@ export default function TimesPage() {
         suhoor: times.nauticalDawn,
       });
     } catch (err) {
-      console.error(err);
+      console.error("Sun data fetch error:", err);
       setError(t("times.errors.failedSunData"));
     }
   };

@@ -155,10 +155,11 @@ export default function TimesPage() {
   ) => {
     try {
       const now = new Date();
+      
       const dateForCalc = new Date(
-          today.getFullYear(),
-          today.getMonth(),
-          today.getDate(),
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate(),
           12,
           0,
           0

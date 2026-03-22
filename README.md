@@ -3,7 +3,7 @@
 This project is a web application built with React that displays **Suhoor and Iftar times** based on the user's location.  
 It automatically calculates these times using **sunset** for Iftar and **nautical dawn** for Suhoor.
 
-🔗 **Live Demo:** fastingtime.onrender.com
+🔗 **Live Demo:** https://fastingtime.onrender.com
 
 ## Features
 
